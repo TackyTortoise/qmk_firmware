@@ -11,6 +11,7 @@ enum layer_number {
 #define HOMEROWMODS
 
 #ifdef HOMEROWMODS
+
 // Left-hand home row mods
 #define HOME_A LGUI_T(KC_A)
 #define HOME_R LALT_T(KC_R)
@@ -22,8 +23,9 @@ enum layer_number {
 #define HOME_E RCTL_T(KC_E)
 #define HOME_I LALT_T(KC_I)
 #define HOME_O RGUI_T(KC_O)
+
 #else
-// Left-hand home row mods
+
 #define HOME_A KC_A
 #define HOME_R KC_R
 #define HOME_S KC_S
@@ -32,6 +34,7 @@ enum layer_number {
 #define HOME_E KC_E
 #define HOME_I KC_I
 #define HOME_O KC_O
+
 #endif
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
