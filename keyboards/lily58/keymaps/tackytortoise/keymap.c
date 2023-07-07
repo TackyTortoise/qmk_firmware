@@ -8,6 +8,32 @@ enum layer_number {
   _ADJUST,
 };
 
+#define HOMEROWMODS
+
+#ifdef HOMEROWMODS
+// Left-hand home row mods
+#define HOME_A LGUI_T(KC_A)
+#define HOME_R LALT_T(KC_R)
+#define HOME_S LCTL_T(KC_S)
+#define HOME_T LSFT_T(KC_T)
+
+// Right-hand home row mods
+#define HOME_N RSFT_T(KC_N)
+#define HOME_E RCTL_T(KC_E)
+#define HOME_I LALT_T(KC_I)
+#define HOME_O RGUI_T(KC_O)
+#else
+// Left-hand home row mods
+#define HOME_A KC_A
+#define HOME_R KC_R
+#define HOME_S KC_S
+#define HOME_T KC_T
+#define HOME_N KC_N
+#define HOME_E KC_E
+#define HOME_I KC_I
+#define HOME_O KC_O
+#endif
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* COLEMAK
  * ,-----------------------------------------.                    ,-----------------------------------------.
@@ -27,7 +53,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  [_COLEMAK] = LAYOUT(
   KC_ESC,   KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                     KC_6,    KC_7,    KC_8,    KC_9,    KC_0,     KC_GRV,
   KC_TAB,   KC_Q,   KC_W,    KC_F,    KC_P,    KC_B,                     KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN,  KC_MINS,
-  KC_LSFT,  KC_A,   KC_R,    KC_S,    KC_T,    KC_G,                     KC_M,    KC_N,    KC_E,    KC_I,    KC_O,     KC_QUOT,
+  KC_LSFT,  HOME_A, HOME_R,  HOME_S,  HOME_T,  KC_G,                     KC_M,    HOME_N,  HOME_E,  HOME_I,  HOME_O,     KC_QUOT,
   KC_LCTL,  KC_Z,   KC_X,    KC_C,    KC_D,    KC_V, KC_LBRC,  KC_RBRC,  KC_K,    KC_H,    KC_COMM, KC_DOT,  KC_SLSH,  KC_RSFT,
                         KC_LGUI, KC_LALT,MO(_LOWER), KC_SPC,  KC_BSPC,MO(_RAISE),KC_ENT, DF(_QWERTY)
 ),
@@ -169,3 +195,57 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
   return true;
 }
+
+#ifdef HOMEROWMODS
+
+static uint16_t next_keycode;
+static keyrecord_t next_record;
+
+bool pre_process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+        // Copy the next key record for mod-tap decisions
+        next_keycode = keycode;
+        next_record  = *record;
+    }
+    return true;
+}
+
+// Matches rows on a 3x5_2 split keyboard
+#define IS_HOMEROW(r) (r->event.key.row == 2 || r->event.key.row == 7)
+
+// Mod-tap and the key that follows are on the same side of the keyboard and are not the same keys
+#define IS_UNILATERAL_TAP(r, n) ( \
+    (r->event.key.row == 2 && 0 <= n.event.key.row && n.event.key.row <= 3 && r->event.key.col != n.event.key.col) || \
+    (r->event.key.row == 7 && 6 <= n.event.key.row && n.event.key.row <= 8 && r->event.key.col != n.event.key.col) )
+
+// Mod-tap and the key that follows are on opposite sides of the keyboard
+#define IS_BILATERAL_TAP(r, n) ( \
+    (r->event.key.row == 2 && 5 <= n.event.key.row && n.event.key.row <= 8) || \
+    (r->event.key.row == 7 && 0 <= n.event.key.row && n.event.key.row <= 3) )
+
+#ifdef HOLD_ON_OTHER_KEY_PRESS_PER_KEY
+bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
+    // Replace the mod-tap key with its base keycode
+    // when tapped with another key on the same hand
+    if (IS_UNILATERAL_TAP(record, next_record)) {
+        // Mask the base keycode and send the tap event
+        record->keycode = keycode & 0xff;
+        process_record(record);
+        // Send the base keycode key up event
+        record->event.pressed = false;
+        process_record(record);
+        // Return true to end action tapping process
+        return true;
+    }
+    return false;
+}
+#endif
+
+#ifdef PERMISSIVE_HOLD_PER_KEY
+bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
+    // Hold modifier with a nested bilateral tap
+    return IS_BILATERAL_TAP(record, next_record);
+}
+#endif
+
+#endif
