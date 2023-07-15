@@ -13,8 +13,8 @@ enum layer_number {
 #ifdef HOMEROWMODS
 
 // Left-hand home row mods
-#define HOME_A LGUI_T(KC_A)
-#define HOME_R LALT_T(KC_R)
+#define HOME_A KC_A
+#define HOME_R KC_R
 #define HOME_S LCTL_T(KC_S)
 #define HOME_T LSFT_T(KC_T)
 
@@ -105,15 +105,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 /* RAISE
  * ,-----------------------------------------.                    ,-----------------------------------------.
- * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |                    |  F7  |  F8  |  F9  | F10  | F11  | F12  |
+ * |   `  |  F1  |  F2  |  F3  |  F4  |  F5  |                    |  F6  |  F7  |  F8  |  F9  | F10  | F11  |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |   `  |   1  |   2  |  7   |   8  |   9  |                    |   6  | Home |  Up  | End  |   0  |      |
+ * |   `  |   1  |   2  |  7   |   8  |   9  |                    |   6  | Home |  Up  | End  |   0  | F12  |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |  F1  |  F2  |  F3  |  4   |   5  |   6  |-------.    ,-------|      | Left | Down |Right |Right |      |
+ * | Shift|  F2  |  F3  |  4   |   5  |   6  |-------.    ,-------|      | Left | Down |Right |Right |      |
  * |------+------+------+------+------+------|   0   |    |    ]  |------+------+------+------+------+------|
- * |  F7  |  F8  |  F9  |  1   |   2  |   3  |-------|    |-------|   +  |   -  |   =  |   [  |   ]  |   \  |
+ * | CTRL |  F8  |  F9  |  1   |   2  |   3  |-------|    |-------|   +  |   -  |   =  |   [  |   ]  |   \  |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
- *                   |Prtscr| 0    |LOWER | /Enter  /       \Enter \  |RAISE |BackSP| RGUI |
+ *                   |Prtscr| Alt  |LOWER | /Space  /       \Enter \  |RAISE |BackSP| RGUI |
  *                   |      |      |      |/       /         \      \ |      |      |      |
  *                   `----------------------------'           '------''--------------------'
  */
@@ -123,7 +123,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_GRV,  KC_1,    KC_2,    KC_7,    KC_8,    KC_9,                        KC_6,    KC_HOME, KC_UP,KC_END,    KC_0,    KC_F12,
   KC_LSFT, KC_F2,    KC_F3,   KC_4,   KC_5,   KC_6,                       XXXXXXX, KC_LEFT, KC_DOWN, KC_RGHT,   KC_RGHT, XXXXXXX,
   KC_LCTL, KC_F8,   KC_F9,   KC_1,  KC_2,  KC_3, KC_0, _______,  KC_PLUS, KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSLS,
-                       KC_PRINT_SCREEN, KC_LALT, _______,  KC_ENT , _______,  _______, _______, _______
+                       KC_PRINT_SCREEN, KC_LALT, _______,  _______ , _______,  _______, _______, _______
 ),
 /* ADJUST
  * ,-----------------------------------------.                    ,-----------------------------------------.
