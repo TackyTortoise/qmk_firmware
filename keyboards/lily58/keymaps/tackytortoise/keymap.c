@@ -15,14 +15,14 @@ enum layer_number {
 // Left-hand home row mods
 #define HOME_A KC_A
 #define HOME_R KC_R
-#define HOME_S KC_S
-#define HOME_T KC_T
+#define HOME_S LCTL_T(KC_S)
+#define HOME_T LSFT_T(KC_T)
 
 // Right-hand home row mods
 #define HOME_N RSFT_T(KC_N)
 #define HOME_E RCTL_T(KC_E)
-#define HOME_I LALT_T(KC_I)
-#define HOME_O RGUI_T(KC_O)
+#define HOME_I KC_I
+#define HOME_O KC_O
 
 #else
 
@@ -113,7 +113,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+---- -+------|       |    |       |------+------+------+------+------+------|
  * | CTRL |      |  1   |   2  |   3  |   0  |-------|    |-------|   +  |   -  |   =  |   [  |   ]  |   \  |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
- *                   |Prtscr| Alt  |LOWER | /Space  /       \Enter \  |RAISE |BackSP| RGUI |
+ *                   |Prtscr|  0   |LOWER | /Space  /       \Enter \  |RAISE |BackSP| RGUI |
  *                   |      |      |      |/       /         \      \ |      |      |      |
  *                   `----------------------------'           '------''--------------------'
  */
@@ -123,7 +123,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______,   KC_7,    KC_8,    KC_9,  _______,                    _______, KC_HOME, KC_UP,   KC_END, _______,  KC_F12,
   KC_LSFT, _______,   KC_4,    KC_5,    KC_6,  _______,                    XXXXXXX, KC_LEFT, KC_DOWN, KC_RGHT,_______, XXXXXXX,
   KC_LCTL, _______,   KC_1,    KC_2,    KC_3,  KC_0,    _______, _______,  KC_PLUS, KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSLS,
-                       KC_PRINT_SCREEN, KC_LALT, _______,  _______ , _______,  _______, _______, _______
+                       KC_PRINT_SCREEN, KC_0,  _______,  _______ , _______,  _______, _______, _______
 ),
 /* ADJUST
  * ,-----------------------------------------.                    ,-----------------------------------------.
